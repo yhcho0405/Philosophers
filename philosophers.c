@@ -6,29 +6,76 @@
 /*   By: youncho <youncho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/07 21:40:40 by youncho           #+#    #+#             */
-/*   Updated: 2021/07/11 03:24:23 by youncho          ###   ########.fr       */
+/*   Updated: 2021/07/14 00:07:29 by youncho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-int	philosophers_init(int argc, char **argv, t_info *info)
+void	*survive_check_loop(void *pv)
 {
-	info->nop = atoi_positive(argv[1]);
-	info->ttd = atoi_positive(argv[2]);
-	info->tte = atoi_positive(argv[3]);
-	info->tts = atoi_positive(argv[4]);
-	info->noe = 0;
-	if (argc == 6)
-		info->noe = atoi_positive(argv[5]);
+	t_philo *p;
+
+	p = pv;
+	while (1)
+	{
+		pthread_mutex_lock(&p->mutex);
+		if (get_time_ms() - p->last_eat > p->info->ttd)
+		{
+			print_state(p, DIE);
+			pthread_mutex_unlock(&p->mutex);
+			return (0);
+		}
+		pthread_mutex_unlock(&p->mutex);
+		usleep(1);
+	}
+}
+
+void	*life_cycle_loop(void *pv)
+{
+	pthread_t	tid;
+	t_philo *p;
+
+	p = pv;
+	p->last_eat = get_time_ms();
+	if (pthread_create(&tid, NULL, &survive_check_loop, p))
+		return ((void *)1);
+	pthread_detach(tid);
+	while (p->info->is_run > 0)
+	{
+		philo_eating(p);
+		philo_sleeping(p);
+		philo_thinking(p);
+	}
+	return (0);
+}
+
+int	philosophers_init(t_info *info, int argc, int i)
+{
 	info->philos = malloc(sizeof(t_philo) * info->nop);
-	if (!info->philos || info->nop < 2 || info->ttd < 30 || info->tte < 30
-		|| info->tts < 30 || (argc == 6 && info->noe < 30))
-		return (FAIL);
 	info->forks = malloc(sizeof(pthread_mutex_t) * info->nop);
-	if (!info->forks)
+	if (!info->philos || !info->forks || info->nop < 2 || info->ttd < 30
+		|| info->tte < 30 || info->tts < 30 || (argc == 6 && info->noe < 1))
 		return (FAIL);
-	//TODO: mutex init
+	pthread_mutex_init(&info->write, NULL);
+	info->start_time = get_time_ms();
+	while (++i < info->nop)
+	{
+		pthread_mutex_init(&info->forks[i], NULL);
+		pthread_mutex_init(&info->philos[i].mutex, NULL);
+		info->philos[i].info = info;
+		info->philos[i].name = i + 1;
+		info->philos[i].l_fork = i;
+		info->philos[i].r_fork = (i + 1) % info->nop;
+		info->philos[i].noe = info->noe;
+	}
+	i = 0;
+	while (i < info->nop && !pthread_create(&info->philos[i].thread, NULL,
+						life_cycle_loop, &info->philos[i])
+						&& !pthread_detach(info->philos[i++].thread))
+		usleep(100);
+	if (i != info->nop)
+		return (FAIL);
 	return (SUCCESS);
 }
 
@@ -38,7 +85,17 @@ int	main(int argc, char **argv)
 
 	if (argc != 5 && argc != 6)
 		return (1);
-	if (philosophers_init(argc, argv, &info) == FAIL)
+	info.nop = atoi_positive(argv[1]);
+	info.ttd = atoi_positive(argv[2]);
+	info.tte = atoi_positive(argv[3]);
+	info.tts = atoi_positive(argv[4]);
+	info.noe = -1;
+	if (argc == 6)
+		info.noe = atoi_positive(argv[5]);
+	info.is_run = info.nop;
+	if (philosophers_init(&info, argc, -1) == FAIL)
 		return (1);
+	while (info.is_run) ;
+	//	TODO: free all
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: youncho <youncho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/07 21:41:07 by youncho           #+#    #+#             */
-/*   Updated: 2021/07/11 03:19:54 by youncho          ###   ########.fr       */
+/*   Updated: 2021/07/13 23:32:38 by youncho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define PHILOSOPHERS_H
 
 # include <unistd.h>
+# include <stdio.h>
 # include <stdlib.h>
 # include <pthread.h>
 # include <sys/time.h>
@@ -22,10 +23,20 @@
 # define FAIL		0
 # define SUCCESS	1
 
-typedef struct s_philo
-{
+# define TAKE_FORK	0
+# define EAT		1
+# define SLEEP		2
+# define THINK		3
+# define DIE		4
 
-}	t_philo;
+
+# define STR_TAKE_FORK	"has taken a fork\n"
+# define STR_EAT 		"is eating\n"
+# define STR_SLEEP		"is sleeping\n"
+# define STR_THINK		"is thinking\n"
+# define STR_DIE		"died\n"
+
+typedef struct s_info	t_info;
 
 /*
 **	abbr.
@@ -36,21 +47,44 @@ typedef struct s_philo
 **	tts	->	time_to_sleep
 **	noe	->	number_of_times_each_philosopher_must_eat (optional)
 */
+typedef struct s_philo
+{
+	pthread_t		thread;
+	pthread_mutex_t	mutex;
+	t_info			*info;
+	int				name;
+	int				l_fork;
+	int				r_fork;
+	int				noe;
+	uint64_t		last_eat;
+}	t_philo;
+
 typedef struct s_info
 {
 	uint64_t		start_time;
 	int				nop;
-	uint32_t		ttd;
-	uint32_t		tte;
-	uint32_t		tts;
+	uint64_t		ttd;
+	uint64_t		tte;
+	uint64_t		tts;
 	int				noe;
+	int				is_run;
 	t_philo 		*philos;
 	pthread_mutex_t *forks;
+	pthread_mutex_t	write;
 }	t_info;
+
+/*
+**	action.c
+*/
+void		philo_eating(t_philo *p);
+void		philo_sleeping(t_philo *p);
+void		philo_thinking(t_philo *p);
 
 /*
 **	utils.c
 */
-int	atoi_positive(const char *str);
+int			atoi_positive(const char *str);
+uint64_t	get_time_ms(void);
+void		print_state(t_philo *p, int state);
 
 #endif
