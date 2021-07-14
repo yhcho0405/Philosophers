@@ -6,7 +6,7 @@
 /*   By: youncho <youncho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/07 21:40:40 by youncho           #+#    #+#             */
-/*   Updated: 2021/07/14 00:07:29 by youncho          ###   ########.fr       */
+/*   Updated: 2021/07/14 16:02:12 by youncho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,12 @@ void	*survive_check_loop(void *pv)
 		pthread_mutex_lock(&p->mutex);
 		if (get_time_ms() - p->last_eat > p->info->ttd)
 		{
-			print_state(p, DIE);
+			print_state(p, DIE, get_time_ms());
 			pthread_mutex_unlock(&p->mutex);
 			return (0);
 		}
 		pthread_mutex_unlock(&p->mutex);
-		usleep(1);
+		usleep(100);
 	}
 }
 
@@ -41,11 +41,13 @@ void	*life_cycle_loop(void *pv)
 	if (pthread_create(&tid, NULL, &survive_check_loop, p))
 		return ((void *)1);
 	pthread_detach(tid);
+	if (p->name % 2 == 0)
+		mysleep(p->info->tte * 0.5, p);
 	while (p->info->is_run > 0)
 	{
 		philo_eating(p);
-		philo_sleeping(p);
-		philo_thinking(p);
+		philo_sleeping(p, get_time_ms());
+		philo_thinking(p, get_time_ms());
 	}
 	return (0);
 }
@@ -58,7 +60,6 @@ int	philosophers_init(t_info *info, int argc, int i)
 		|| info->tte < 30 || info->tts < 30 || (argc == 6 && info->noe < 1))
 		return (FAIL);
 	pthread_mutex_init(&info->write, NULL);
-	info->start_time = get_time_ms();
 	while (++i < info->nop)
 	{
 		pthread_mutex_init(&info->forks[i], NULL);
@@ -70,10 +71,11 @@ int	philosophers_init(t_info *info, int argc, int i)
 		info->philos[i].noe = info->noe;
 	}
 	i = 0;
+	info->start_time = get_time_ms();
 	while (i < info->nop && !pthread_create(&info->philos[i].thread, NULL,
 						life_cycle_loop, &info->philos[i])
 						&& !pthread_detach(info->philos[i++].thread))
-		usleep(100);
+		usleep(10);
 	if (i != info->nop)
 		return (FAIL);
 	return (SUCCESS);
@@ -95,7 +97,8 @@ int	main(int argc, char **argv)
 	info.is_run = info.nop;
 	if (philosophers_init(&info, argc, -1) == FAIL)
 		return (1);
-	while (info.is_run) ;
-	//	TODO: free all
+	while (info.is_run)
+		;
+	exit_phase(&info);
 	return (0);
 }

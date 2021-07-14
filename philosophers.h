@@ -6,7 +6,7 @@
 /*   By: youncho <youncho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/07 21:41:07 by youncho           #+#    #+#             */
-/*   Updated: 2021/07/13 23:32:38 by youncho          ###   ########.fr       */
+/*   Updated: 2021/07/14 15:17:13 by youncho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,14 +77,15 @@ typedef struct s_info
 **	action.c
 */
 void		philo_eating(t_philo *p);
-void		philo_sleeping(t_philo *p);
-void		philo_thinking(t_philo *p);
+void		philo_sleeping(t_philo *p, uint64_t real_time);
+void		philo_thinking(t_philo *p, uint64_t real_time);
 
 /*
 **	utils.c
 */
 int			atoi_positive(const char *str);
 uint64_t	get_time_ms(void);
-void		print_state(t_philo *p, int state);
+void		print_state(t_philo *p, int state, uint64_t real_time);
+void		mysleep(uint64_t time, t_philo *p);
 
 #endif

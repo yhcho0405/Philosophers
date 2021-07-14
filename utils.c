@@ -6,7 +6,7 @@
 /*   By: youncho <youncho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/09 10:30:39 by youncho           #+#    #+#             */
-/*   Updated: 2021/07/13 23:44:19 by youncho          ###   ########.fr       */
+/*   Updated: 2021/07/14 16:06:31 by youncho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,15 +50,40 @@ uint64_t	get_time_ms(void)
 	return ((tv.tv_sec * (uint64_t)1000) + (tv.tv_usec / 1000));
 }
 
-void	print_state(t_philo *p, int state)
+void	print_state(t_philo *p, int state, uint64_t real_time)
 {
 	const char	*str[6] =
 		{STR_TAKE_FORK, STR_EAT, STR_SLEEP, STR_THINK, STR_DIE, NULL};
+
 	pthread_mutex_lock(&p->info->write);
 	if (p->info->is_run > 0)
 		printf("%llu %d %s",
-			get_time_ms() - p->info->start_time, p->name, str[state]);
+			real_time - p->info->start_time, p->name, str[state]);
 	if (state == DIE)
 		p->info->is_run = 0;
 	pthread_mutex_unlock(&p->info->write);
+}
+
+void	mysleep(uint64_t time, t_philo *p)
+{
+	uint64_t	end_time;
+
+	end_time = get_time_ms() + time;
+	while (get_time_ms() < end_time && p->info->is_run)
+		usleep(time);
+}
+
+void	exit_phase(t_info *info)
+{
+	int	i;
+
+	i = -1;
+	while (++i < info->nop)
+		pthread_mutex_destroy(&info->forks[i]);
+	free(info->forks);
+	i = -1;
+	while (++i < info->nop)
+		pthread_mutex_destroy(&info->philos[i].mutex);
+	free(info->philos);
+	pthread_mutex_destroy(&info->write);
 }
