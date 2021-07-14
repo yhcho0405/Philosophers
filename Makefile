@@ -6,31 +6,31 @@
 #    By: youncho <youncho@student.42seoul.kr>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/07/07 21:41:25 by youncho           #+#    #+#              #
-#    Updated: 2021/07/13 23:08:08 by youncho          ###   ########.fr        #
+#    Updated: 2021/07/14 16:32:14 by youncho          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SRCS			= philosophers.c action.c utils.c
-OBJS			= $(SRCS:.c=.o)
+SRCS =	philosophers.c \
+		actions.c \
+		utils.c
 
-CC				= gcc
-RM				= rm -f
-CFLAGS			= -Wall -Wextra -Werror -I.
-LIBS			= -lpthread
+OBJS = $(SRCS:.c=.o)
 
-NAME			= philo
+CFLAGS = -Wall -Wextra -Werror -I.
 
-all:			$(NAME)
+NAME = philo
 
-$(NAME):		$(OBJS)
-				gcc ${CFLAGS} -o ${NAME} ${OBJS} ${LIBS}
+all: $(NAME)
+
+$(NAME): $(OBJS)
+	gcc ${CFLAGS} -o ${NAME} ${OBJS} -lpthread
 
 clean:
-				$(RM) $(OBJS) $(BONUS_OBJS)
+	$(RM) $(OBJS) $(BONUS_OBJS)
 
-fclean:			clean
-				$(RM) $(NAME)
+fclean: clean
+	rm -f $(NAME)
 
-re:				fclean $(NAME)
+re: fclean $(NAME)
 
-.PHONY:			all clean fclean re
+.PHONY: all clean fclean re

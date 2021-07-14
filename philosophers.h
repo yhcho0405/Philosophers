@@ -6,7 +6,7 @@
 /*   By: youncho <youncho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/07 21:41:07 by youncho           #+#    #+#             */
-/*   Updated: 2021/07/14 15:17:13 by youncho          ###   ########.fr       */
+/*   Updated: 2021/07/14 16:29:47 by youncho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,16 @@ typedef struct s_info
 }	t_info;
 
 /*
-**	action.c
+**	philosophers.c
 */
+void		*survive_check_loop(void *pv);
+void		*life_cycle_loop(void *pv);
+int			philosophers_init(t_info *info, int argc, int i);
+
+/*
+**	actions.c
+*/
+void		philo_take_fork(t_philo *p);
 void		philo_eating(t_philo *p);
 void		philo_sleeping(t_philo *p, uint64_t real_time);
 void		philo_thinking(t_philo *p, uint64_t real_time);
@@ -87,5 +95,6 @@ int			atoi_positive(const char *str);
 uint64_t	get_time_ms(void);
 void		print_state(t_philo *p, int state, uint64_t real_time);
 void		mysleep(uint64_t time, t_philo *p);
+void		exit_phase(t_info *info);
 
 #endif
