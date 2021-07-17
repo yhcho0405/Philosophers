@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   action.c                                           :+:      :+:    :+:   */
+/*   actions.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: youncho <youncho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/13 17:13:19 by youncho           #+#    #+#             */
-/*   Updated: 2021/07/14 15:54:28 by youncho          ###   ########.fr       */
+/*   Updated: 2021/07/17 11:13:23 by youncho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,11 @@ void	philo_eating(t_philo *p)
 	p->last_eat = real_time;
 	p->noe--;
 	if (!p->noe)
+	{
+		pthread_mutex_lock(&p->info->write);
 		p->info->is_run--;
+		pthread_mutex_unlock(&p->info->write);
+	}
 	pthread_mutex_unlock(&p->mutex);
 	mysleep(p->info->tte, p);
 }

@@ -6,7 +6,7 @@
 /*   By: youncho <youncho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/07 21:41:07 by youncho           #+#    #+#             */
-/*   Updated: 2021/07/14 16:29:47 by youncho          ###   ########.fr       */
+/*   Updated: 2021/07/17 11:44:33 by youncho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,19 @@
 # define THINK		3
 # define DIE		4
 
+# define RED		"\x1b[31m"
+# define GREEN		"\x1b[32m"
+# define YELLOW		"\x1b[33m"
+# define BLUE		"\x1b[34m"
+# define MAGENTA	"\x1b[35m"
+# define CYAN		"\x1b[36m"
+# define RESET		"\x1b[0m"
 
-# define STR_TAKE_FORK	"has taken a fork\n"
-# define STR_EAT 		"is eating\n"
-# define STR_SLEEP		"is sleeping\n"
-# define STR_THINK		"is thinking\n"
-# define STR_DIE		"died\n"
+# define STR_TAKE_FORK	GREEN"has taken a fork\n"RESET
+# define STR_EAT 		YELLOW"is eating\n"RESET
+# define STR_SLEEP		CYAN"is sleeping\n"RESET
+# define STR_THINK		BLUE"is thinking\n"RESET
+# define STR_DIE		RED"died\n"RESET
 
 typedef struct s_info	t_info;
 
