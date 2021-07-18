@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   actions.c                                          :+:      :+:    :+:   */
+/*   actions_bonus.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: youncho <youncho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/07/13 17:13:19 by youncho           #+#    #+#             */
-/*   Updated: 2021/07/17 11:13:23 by youncho          ###   ########.fr       */
+/*   Created: 2021/07/17 16:56:52 by youncho           #+#    #+#             */
+/*   Updated: 2021/07/18 21:47:20 by youncho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philosophers.h"
+#include "../includes/philosophers_bonus.h"
 
 void	philo_take_fork(t_philo *p)
 {

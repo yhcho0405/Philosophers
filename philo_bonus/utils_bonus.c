@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   utils_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: youncho <youncho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/07/09 10:30:39 by youncho           #+#    #+#             */
-/*   Updated: 2021/07/17 11:38:50 by youncho          ###   ########.fr       */
+/*   Created: 2021/07/17 16:57:11 by youncho           #+#    #+#             */
+/*   Updated: 2021/07/18 21:45:53 by youncho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philosophers.h"
+#include "../includes/philosophers_bonus.h"
 
 /*
 **	< atoi_positive >
@@ -64,13 +64,13 @@ void	print_state(t_philo *p, int state, uint64_t real_time)
 	pthread_mutex_unlock(&p->info->write);
 }
 
-void	mysleep(uint64_t time, t_philo *p)
+void	mysleep(uint64_t sleep_ms, t_philo *p)
 {
 	uint64_t	end_time;
 
-	end_time = get_time_ms() + time;
+	end_time = get_time_ms() + sleep_ms;
 	while (get_time_ms() < end_time && p->info->is_run)
-		usleep(time);
+		usleep(100);
 }
 
 void	exit_phase(t_info *info)

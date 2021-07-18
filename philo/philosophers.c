@@ -6,11 +6,11 @@
 /*   By: youncho <youncho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/07 21:40:40 by youncho           #+#    #+#             */
-/*   Updated: 2021/07/17 11:11:41 by youncho          ###   ########.fr       */
+/*   Updated: 2021/07/18 21:46:09 by youncho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philosophers.h"
+#include "../includes/philosophers.h"
 
 void	*survive_check_loop(void *pv)
 {
