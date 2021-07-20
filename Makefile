@@ -6,12 +6,12 @@
 #    By: youncho <youncho@student.42seoul.kr>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/07/07 21:41:25 by youncho           #+#    #+#              #
-#    Updated: 2021/07/18 21:46:39 by youncho          ###   ########.fr        #
+#    Updated: 2021/07/19 17:04:53 by youncho          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = ./philo/philo
-NAME_BONUS = ./philo_bonus/philo_bonus
+NAME = philo
+NAME_BONUS = philo_bonus
 
 SRCS =	./philo/philosophers.c \
 		./philo/actions.c \
@@ -33,10 +33,10 @@ $(%.o): $(%.c)
 	$(CC) -o $@ -c $^
 
 $(NAME): $(OBJS)
-	$(CC) -o ${NAME} ${OBJS} -I./includes
+	$(CC) -o ./philo/${NAME} ${OBJS} -I./includes
 
 $(NAME_BONUS): $(OBJS_BONUS)
-	$(CC) -o ${NAME_BONUS} ${OBJS_BONUS} -I./includes
+	$(CC) -o ./philo_bonus/${NAME_BONUS} ${OBJS_BONUS} -I./includes
 
 bonus: $(NAME_BONUS)
 
@@ -45,8 +45,8 @@ clean:
 	rm -f $(OBJS_BONUS)
 
 fclean: clean
-	rm -f $(NAME)
-	rm -f $(NAME_BONUS)
+	rm -f ./philo/$(NAME)
+	rm -f ./philo_bonus/$(NAME_BONUS)
 
 re: fclean all
 

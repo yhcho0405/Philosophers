@@ -6,7 +6,7 @@
 /*   By: youncho <youncho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/17 16:57:05 by youncho           #+#    #+#             */
-/*   Updated: 2021/07/18 21:47:18 by youncho          ###   ########.fr       */
+/*   Updated: 2021/07/18 21:52:43 by youncho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@
 # include <pthread.h>
 # include <sys/time.h>
 # include <limits.h>
+# include <semaphore.h>
+# include <signal.h>
 
 # define FAIL		0
 # define SUCCESS	1
