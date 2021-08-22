@@ -1,6 +1,0 @@
-{
-	"files.associations": {
-		"philosophers_bonus.h": "c",
-		"__threading_support": "cpp"
-	}
-}

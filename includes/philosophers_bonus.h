@@ -6,7 +6,7 @@
 /*   By: youncho <youncho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/17 16:57:05 by youncho           #+#    #+#             */
-/*   Updated: 2021/07/18 21:52:43 by youncho          ###   ########.fr       */
+/*   Updated: 2021/07/23 12:24:15 by youncho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,21 @@
 # define CYAN		"\x1b[36m"
 # define RESET		"\x1b[0m"
 
-# define STR_TAKE_FORK	GREEN"has taken a fork\n"RESET
-# define STR_EAT 		YELLOW"is eating\n"RESET
-# define STR_SLEEP		CYAN"is sleeping\n"RESET
-# define STR_THINK		BLUE"is thinking\n"RESET
-# define STR_DIE		RED"died\n"RESET
+# define COLOR_PRINT	0
+
+# if COLOR_PRINT
+#  define STR_TAKE_FORK	"\x1b[32mhas taken a fork\n\x1b[0m"
+#  define STR_EAT		"\x1b[33mis eating\n\x1b[0m"
+#  define STR_SLEEP		"\x1b[36mis sleeping\n\x1b[0m"
+#  define STR_THINK		"\x1b[34mis thinking\n\x1b[0m"
+#  define STR_DIE		"\x1b[31mdied\n\x1b[0m"
+# else
+#  define STR_TAKE_FORK	"has taken a fork\n"
+#  define STR_EAT 		"is eating\n"
+#  define STR_SLEEP		"is sleeping\n"
+#  define STR_THINK		"is thinking\n"
+#  define STR_DIE		"died\n"
+# endif
 
 typedef struct s_info	t_info;
 
@@ -74,7 +84,7 @@ typedef struct s_info
 	int				noe;
 	int				is_run;
 	pid_t			*pid;
-	t_philo 		philos;
+	t_philo			philos;
 	sem_t			*forks;
 	sem_t			*write;
 }	t_info;

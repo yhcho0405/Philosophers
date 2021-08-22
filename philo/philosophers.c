@@ -6,7 +6,7 @@
 /*   By: youncho <youncho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/07 21:40:40 by youncho           #+#    #+#             */
-/*   Updated: 2021/07/18 21:46:09 by youncho          ###   ########.fr       */
+/*   Updated: 2021/08/02 12:36:04 by youncho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,8 @@ int	philosophers_init(t_info *info, int argc, int i)
 {
 	info->philos = malloc(sizeof(t_philo) * info->nop);
 	info->forks = malloc(sizeof(pthread_mutex_t) * info->nop);
-	if (!info->philos || !info->forks || info->nop < 2 || info->ttd < 30
-		|| info->tte < 30 || info->tts < 30 || (argc == 6 && info->noe < 1))
+	if (!info->philos || !info->forks || info->nop < 1 || info->ttd < 10
+		|| info->tte < 10 || info->tts < 10 || (argc == 6 && info->noe < 1))
 		return (FAIL);
 	pthread_mutex_init(&info->write, NULL);
 	while (++i < info->nop)
